@@ -8,6 +8,7 @@ import { View, Platform, Text, ScrollView, Image, StyleSheet } from 'react-nativ
 import { createStackNavigator, createDrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
+import Reservation from './ReservationComponent';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
@@ -25,6 +26,23 @@ const mapDispatchToProps = dispatch => ({
     fetchLeaders: () => dispatch(fetchLeaders()),
     fetchPromotions: () => dispatch(fetchPromos())
 });
+
+const ReservationNavigator = createStackNavigator({
+    Reservation: { screen: Reservation }
+  }, {
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+          backgroundColor: "#512DA8"
+      },
+      headerTitleStyle: {
+          color: "#fff"            
+      },
+      headerTintColor: "#fff",
+      headerLeft: <Icon name="menu" size={24}
+        iconStyle={{ color: 'white' }} 
+        onPress={ () => navigation.navigate('DrawerToggle') } />    
+    })
+  })
 
 const MenuNavigator = createStackNavigator({
     Menu: { screen: Menu,
@@ -186,8 +204,24 @@ const MainNavigator = createDrawerNavigator({
                     />
               )
           }
+      },
+      Reservation:
+      { screen: ReservationNavigator,
+        navigationOptions: {
+          title: 'Reserve Table',
+          drawerLabel: 'Reserve Table',
+          drawerIcon: ({ tintColor, focused }) => (
+            <Icon
+              name='cutlery'
+              type='font-awesome'            
+              size={24}
+              iconStyle={{ color: tintColor }}
+            />
+          ),
+        }
       }
-}, {
+},
+       {
   drawerBackgroundColor: '#D1C4E9',
   contentComponent: CustomDrawerContentComponent
 });
